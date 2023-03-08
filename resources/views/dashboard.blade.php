@@ -14,4 +14,17 @@
             </div>
         </div>
     </div>
+    <script>
+        window.addEventListener('load', () => {
+            Echo.channel('things')
+                .listen('NewThingAvailable', (event) => {
+                    alert(event.message)
+                });
+
+            Echo.private('App.Models.User.{{ auth()->id() }}')
+                .listen('OrderDispatched', (e) => {
+                    alert(`Your product for ${e.order.amount} was delivered!!`)
+                })
+        });
+    </script>
 </x-app-layout>

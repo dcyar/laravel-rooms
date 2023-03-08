@@ -18,6 +18,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::view('/broadcast', 'broadcast')->name('broad');
+
+Route::post('/broadcast', function (\Illuminate\Http\Request $request) {
+    \App\Events\NewThingAvailable::dispatch($request->string('message'));
+
+    return to_route('broad');
+});
+
+Route::get('/broadcast/private', function () {
+    \App\Events\OrderDispatched::dispatch(\App\Models\Order::find(1));
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
