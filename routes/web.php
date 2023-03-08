@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\BroadcastController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomMessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,16 +22,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('rooms', RoomController::class);
+    Route::post('/rooms/message', [RoomMessageController::class, 'store'])->name('rooms.message.store');
+});
 
 Route::controller(BroadcastController::class)->prefix('broadcast')->group(function () {
     Route::get('/', 'index')->name('broad');
     Route::post('/', 'store');
     Route::get('/private', 'private');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
