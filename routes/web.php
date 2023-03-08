@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BroadcastController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,21 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('/broadcast', 'broadcast')->name('broad');
-
-Route::post('/broadcast', function (\Illuminate\Http\Request $request) {
-    \App\Events\NewThingAvailable::dispatch($request->string('message'));
-
-    return to_route('broad');
-});
-
-Route::get('/broadcast/private', function () {
-    \App\Events\OrderDispatched::dispatch(\App\Models\Order::find(1));
-});
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::controller(BroadcastController::class)->prefix('broadcast')->group(function () {
+    Route::get('/', 'index')->name('broad');
+    Route::post('/', 'store');
+    Route::get('/private', 'private');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
