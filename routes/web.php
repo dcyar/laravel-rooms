@@ -25,7 +25,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('rooms', RoomController::class);
+    Route::resource('rooms', RoomController::class)->except(['edit', 'update', 'delete']);
+    Route::get('/rooms/{room}/join', [RoomController::class, 'join'])->name('rooms.join');
     Route::post('/rooms/message', [RoomMessageController::class, 'store'])->name('rooms.message.store');
 });
 

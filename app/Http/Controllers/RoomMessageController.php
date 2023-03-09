@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RoomMessageSent;
 use App\Models\RoomMessage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -41,6 +42,8 @@ class RoomMessageController extends Controller
             ]);
 
         $roomMessage->load('user');
+        broadcast(new RoomMessageSent($roomMessage))->toOthers();
+        // RoomMessageSent::dispatch($roomMessage);
 
         return response()->json([
             'message' => 'message was send successfully',
