@@ -32,7 +32,7 @@ class RoomMessageSent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('room.' . $this->roomMessage->room_id),
+            new PresenceChannel('room.' . $this->roomMessage->room_id),
         ];
     }
 }

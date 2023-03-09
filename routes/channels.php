@@ -20,5 +20,11 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('room.{room}', function ($user, Room $room) {
-    return $room->members->pluck('id')->contains($user->id);
+    if ($room->members->pluck('id')->contains($user->id)) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ];
+    }
 });

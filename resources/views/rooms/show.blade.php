@@ -13,6 +13,11 @@
     <div class="py-12">
         @if($room->canAccess(auth()->id()))
             <div x-data="room({{ $room->messages }})" class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="mb-2">
+                    <template x-for="user in roomUsers" :key="user.id">
+                        <span class="text-xs text-slate-700 border rounded-md bg-orange-200 py-1 px-2 mr-1" x-text="user.email"></span>
+                    </template>
+                </div>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg divide-y-2">
                     <template x-for="message in messages" :key="message.id">
                         <div class="p-6 text-gray-900">
@@ -53,11 +58,22 @@
                 Alpine.data('room', (messages) => ({
                     messages: messages,
                     message: '',
+                    roomUsers: [],
                     init() {
-                        Echo.private('room.{{ $room->id }}')
+                        Echo.join('room.{{ $room->id }}')
+                            .here(users => {
+                                this.roomUsers = [...users];
+                            })
+                            .joining(user => {
+                                this.roomUsers = [user, ...this.roomUsers]
+                            })
+                            .leaving(user => {
+                                this.roomUsers = this.roomUsers.filter(usr => usr.id !== user.id)
+                            })
                             .listen('RoomMessageSent', ({ roomMessage}) => {
                                 this.messages = [roomMessage, ...this.messages];
                             })
+                            .error(err => console.log(err))
                     },
                     async sendMessage({ target }) {
                         const { data } = await axios.post(target.action, {
