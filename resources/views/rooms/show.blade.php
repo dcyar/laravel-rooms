@@ -20,9 +20,9 @@
                 </div>
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg divide-y-2">
                     <template x-for="message in messages" :key="message.id">
-                        <div class="p-6 text-gray-900">
-                            <h5 x-text="message.user.name" class="text-xs"></h5>
-                            <p x-text="message.message" class="text-slate-500"></p>
+                        <div class="p-6 text-gray-900" :class="message.class">
+                            <h5 x-text="!message.class ? message.user.name : 'Bot Room'" class="text-xs"></h5>
+                            <p x-text="message.message" class="text-slate-700"></p>
                         </div>
                     </template>
                 </div>
@@ -65,10 +65,22 @@
                                 this.roomUsers = [...users];
                             })
                             .joining(user => {
-                                this.roomUsers = [user, ...this.roomUsers]
+                                joiningMessage = {
+                                    id: (new Date()).getTime(),
+                                    message: `${user.name} se ha unido a la sala.`,
+                                    class: 'bg-green-300',
+                                };
+                                this.roomUsers = [user, ...this.roomUsers];
+                                this.messages = [joiningMessage, ...this.messages];
                             })
                             .leaving(user => {
+                                leavingMessage = {
+                                    id: (new Date()).getTime(),
+                                    message: `${user.name} se ha ido de la sala.`,
+                                    class: 'bg-red-300',
+                                };
                                 this.roomUsers = this.roomUsers.filter(usr => usr.id !== user.id)
+                                this.messages = [leavingMessage, ...this.messages];
                             })
                             .listen('RoomMessageSent', ({ roomMessage}) => {
                                 this.messages = [roomMessage, ...this.messages];
