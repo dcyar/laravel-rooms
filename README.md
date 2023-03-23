@@ -30,3 +30,20 @@ npm install && npm run build
 # Levantar soketi
 soketi start
 ```
+
+## Capturas
+Vista de bienvenida
+
+![Welcome](/demo/welcome.png)
+
+Vista para crear salas
+
+![Create Room](/demo/create-room.png)
+
+Vista de lista de salas
+
+![Rooms List](/demo/rooms-list.png)
+
+Vista de chat
+
+![Chat](/demo/chat.png)
