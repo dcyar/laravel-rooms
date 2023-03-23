@@ -32,18 +32,18 @@ soketi start
 ```
 
 ## Capturas
-Vista de bienvenida
+### Vista de bienvenida
 
-![Welcome](/demo/welcome.png)
+![Welcome](https://raw.githubusercontent.com/dcyar/laravel-rooms/main/public/demo/welcome.png)
 
-Vista para crear salas
+### Vista para crear salas
 
-![Create Room](/demo/create-room.png)
+![Create Room](https://raw.githubusercontent.com/dcyar/laravel-rooms/main/public/demo/create-room.png)
 
-Vista de lista de salas
+### Vista de lista de salas
 
-![Rooms List](/demo/rooms-list.png)
+![Rooms List](https://raw.githubusercontent.com/dcyar/laravel-rooms/main/public/demo/rooms-list.png)
 
-Vista de chat
+### Vista de chat
 
-![Chat](/demo/chat.png)
+![Chat](https://raw.githubusercontent.com/dcyar/laravel-rooms/main/public/demo/chat.png)
